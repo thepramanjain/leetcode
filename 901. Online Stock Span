@@ -1,0 +1,49 @@
+Brute force approach: TIME COMPLEXITY : O (Number of days)
+                      SPACE COMPLEXITY : O(Number of Next calls)
+
+class StockSpanner {
+public:
+   vector<int> arr;
+   
+    StockSpanner() {
+ 
+    }
+    
+    int next(int price) {
+        int n = arr.size(); 
+        arr.push_back(price);
+        int cnt = 1; 
+        for(int i = n - 1 ; i >= 0 ; i--){
+            if (arr[i] <= price) cnt ++;
+            else break;
+        }
+        return cnt;
+        
+    }
+};
+
+-------------------------------------------------------------------------------------------------------
+Optimal approach : TIME COMPLEXITY : O(2N)
+                   SPACE COMPLEXITY : O (N)
+
+class StockSpanner {
+public:
+    int index;
+    stack<pair<int,int>> st;
+    StockSpanner() {
+        index =-1; 
+        // st.clear();
+    }
+    
+    int next(int price) {
+        index+=1;
+        int ans;
+        while(!st.empty() && st.top().first<= price )
+        {
+            st.pop();
+        }
+        ans = index - (st.empty()? -1: st.top().second);
+        st.push({price,index});
+        return ans;
+    }
+};
