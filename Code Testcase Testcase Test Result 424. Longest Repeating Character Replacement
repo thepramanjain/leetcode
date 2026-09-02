@@ -1,0 +1,56 @@
+BY BRUTE FORCE APPROACH
+
+class Solution {
+public:
+    int characterReplacement(string s, int k) {
+        unordered_map<char, int> hash;
+        int maxlength = 0;
+        int n = s.size();
+
+        for (int i = 0; i < n; i++) {
+            hash.clear();
+            int maxFreq = 0;
+            for (int j = i; j < n; j++) {
+                hash[s[j]]++;
+                 int len = (j - i +1 );
+
+                maxFreq = max(maxFreq, hash[s[j]]);
+                int changes = (len) - maxFreq;
+
+                if (changes <= k) {
+                    maxlength = max(maxlength, len);
+                }
+            }
+        }
+        return maxlength;
+    }
+};
+-------------------------------------------------------------------------------------
+
+By SLIDING WINDOW AND 2 POINTER APPROACH
+
+class Solution {
+public:
+    int characterReplacement(string s, int k) {
+        unordered_map<char, int> hash;
+        int maxlength = 0;
+        int n = s.size();
+        int maxfreq = 0;
+        int r = 0;
+        int l = 0;
+
+        while (r < n) {
+            hash[s[r]]++;
+
+            maxfreq = max(maxfreq, hash[s[r]]);
+
+            while ((r - l + 1) - maxfreq > k) {
+                hash[s[l]]--;
+                l++;
+            }
+            maxlength = max(maxlength, (r - l + 1));
+            r++;
+        }
+        return maxlength;
+    }
+};
